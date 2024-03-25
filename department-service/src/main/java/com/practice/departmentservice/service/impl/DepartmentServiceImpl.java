@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -31,6 +32,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDto updateDepartment(DepartmentDto departmentDto, long id) {
+
         return null;
     }
 
@@ -41,7 +43,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentDto> getAllDepartments() {
-        return null;
+        List<Department> departments = departmentRepository.findAll();
+        return departments.stream()
+                .map((dep) -> modelMapper.map(dep, DepartmentDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
