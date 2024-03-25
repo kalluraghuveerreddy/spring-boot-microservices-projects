@@ -28,4 +28,10 @@ public class DepartmentController {
     public ResponseEntity<List<DepartmentDto>> getAllDepartments(){
         return new ResponseEntity<>(departmentService.getAllDepartments(), HttpStatus.OK);
     }
+
+    @GetMapping("{depCode}")
+    public ResponseEntity<DepartmentDto> getDepartmentByDepCode(@PathVariable("depCode") String departmentCode){
+        return new ResponseEntity<>(departmentService.getDepartmentByDepartmentCode(departmentCode),HttpStatus.OK);
+    }
+
 }

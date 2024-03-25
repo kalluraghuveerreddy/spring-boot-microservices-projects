@@ -20,4 +20,7 @@ public interface DepartmentService {
 
     void deleteAll();
 
+    DepartmentDto getDepartmentByDepartmentCode(String departmentCode);
+
+
 }
