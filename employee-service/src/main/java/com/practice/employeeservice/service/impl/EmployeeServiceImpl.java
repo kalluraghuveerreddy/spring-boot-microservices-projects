@@ -3,13 +3,16 @@ package com.practice.employeeservice.service.impl;
 import com.practice.employeeservice.dto.APIResponseDto;
 import com.practice.employeeservice.dto.DepartmentDto;
 import com.practice.employeeservice.dto.EmployeeDto;
+import com.practice.employeeservice.dto.OrganizationDto;
 import com.practice.employeeservice.entity.Employee;
 import com.practice.employeeservice.repository.EmployeeRepository;
 import com.practice.employeeservice.service.ApiClient;
+import com.practice.employeeservice.service.ApiClientOrganization;
 import com.practice.employeeservice.service.EmployeeService;
 import org.aspectj.asm.IModelFilter;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -25,17 +28,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     //private RestTemplate restTemplate;
     //private WebClient webClient;
     private ApiClient apiClient;
+    private ApiClientOrganization apiClientOrganization;
 
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository,
                                ModelMapper modelMapper,
-                               ApiClient apiClient
+                               ApiClient apiClient,
+                               ApiClientOrganization apiClientOrganization
                                //WebClient webClient
                                //RestTemplate restTemplate
     ) {
         this.employeeRepository = employeeRepository;
         this.modelMapper = modelMapper;
         this.apiClient=apiClient;
+        this.apiClientOrganization=apiClientOrganization;
         //this.restTemplate = restTemplate;
         //this.webClient = webClient;
     }
@@ -69,8 +75,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 //                .bodyToMono(DepartmentDto.class)
 //                .block();
         DepartmentDto departmentDto = apiClient.getDepartmentByDepCode(employee.getDepartmentCode());
+        OrganizationDto organizationDto = apiClientOrganization.getOrganizationByCode(employee.getOrganizationCode());
 
-        APIResponseDto apiResponseDto = new APIResponseDto(modelMapper.map(employee, EmployeeDto.class), departmentDto);
+        APIResponseDto apiResponseDto = new APIResponseDto(modelMapper.map(employee, EmployeeDto.class), departmentDto,organizationDto);
         return apiResponseDto;
     }
 
